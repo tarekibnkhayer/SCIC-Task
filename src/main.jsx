@@ -5,11 +5,16 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Root from './layout/Root';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import AuthProvider from './providers/AuthProvider';
 import Login from './pages/Login';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import Dashboard from './pages/Dashboard';
+import Root from './layout/Root';
+import PrivateRoutes from './providers/PrivateRoutes';
+import CreateTask from './pages/CreateTask';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +31,14 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login></Login>
+      },
+      {
+        path: "/dashboard",
+        element: <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes>
+      },
+      {
+        path: '/createTask',
+        element: <PrivateRoutes><CreateTask></CreateTask></PrivateRoutes>
       }
     ]
   },
@@ -33,8 +46,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+      <DndProvider backend={HTML5Backend}>
       <AuthProvider>
       <RouterProvider router={router} />
       </AuthProvider>
+      </DndProvider>
   </React.StrictMode>,
 )
