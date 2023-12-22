@@ -1,6 +1,10 @@
+import useAuth from "../myHooks/useAuth";
+import useServer from "../myHooks/useServer";
 
 
 const CreateTask = () => {
+  const {user} = useAuth();
+  const server = useServer();
     const currentDate = new Date().toISOString().split("T")[0];
     const handleCreateTask = e => {
         e.preventDefault();
@@ -9,8 +13,18 @@ const CreateTask = () => {
         const des = form.des.value;
         const priority = form.priority.value;
         const deadline = form.deadline.value;
-        console.log(title, des, priority, deadline);
-        
+        const email = user.email
+        const task = {
+          title,
+          des,
+          priority,
+          deadline,
+          email
+        }
+        console.log(task);
+        server.post('/tasks', task)
+        .then(res => console.log(res.data))
+        .catch(err => console.error(err));
     }
     return (
         <div>
