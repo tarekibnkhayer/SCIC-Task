@@ -14,8 +14,8 @@ const Dashboard = () => {
         <div>
            Previous Task
         </div>
-        {/* 3rd column[to-do lists] */}
-        <div>
+          {/* 3rd column[to-do lists] */}
+          <div >
             To-do
         </div>
         {/* 4th column[ongoing] */}
@@ -26,6 +26,7 @@ const Dashboard = () => {
         <div>
             completed
         </div>
+      
         </div>
     );
 };

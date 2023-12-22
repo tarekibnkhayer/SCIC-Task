@@ -1,25 +1,20 @@
 import useAuth from "../myHooks/useAuth";
 import useServer from "../myHooks/useServer";
+import { useForm } from "react-hook-form";
 
 
 const CreateTask = () => {
   const {user} = useAuth();
   const server = useServer();
+  const { register, handleSubmit } = useForm();
     const currentDate = new Date().toISOString().split("T")[0];
-    const handleCreateTask = e => {
-        e.preventDefault();
-        const form = e.target;
-        const title = form.title.value;
-        const des = form.des.value;
-        const priority = form.priority.value;
-        const deadline = form.deadline.value;
-        const email = user.email
+    const onSubmit = data => {
         const task = {
-          title,
-          des,
-          priority,
-          deadline,
-          email
+         title: data.title,
+         des: data.des,
+         priority: data.priority,
+         deadline: data.deadline,
+         email: user.email
         }
         console.log(task);
         server.post('/tasks', task)
@@ -32,18 +27,17 @@ const CreateTask = () => {
           <h1 className="text-5xl  font-normal text-[#374151] text-center font-Rancho">
            Create New Task
           </h1>
-          <form className="card-body" onSubmit={handleCreateTask}>
+          <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex w-full gap-6">
               <div className="w-1/2">
                 <label className="label">
                   <span className="label-text">Title</span>
                 </label>
                 <input
+                {...register("title", {required: true})}
                   type="text"
-                  name="title"
                   placeholder="Enter Your Task Title"
                   className="input input-bordered w-full"
-                  required
                 />
               </div>
               <div className="w-1/2">
@@ -51,11 +45,10 @@ const CreateTask = () => {
                   <span className="label-text">Description</span>
                 </label>
                 <input
+                  {...register('des', {required: true})}
                   type="text"
-                  name="des"
                   placeholder="Enter Task Description"
                   className="input input-bordered w-full"
-                  required
                 />
               </div>
             </div>
@@ -63,7 +56,9 @@ const CreateTask = () => {
             <label className="label">
                   <span className="label-text">Priority</span>
                 </label>
-            <select name="priority" className="input  min-w-full">
+            <select
+             {...register('priority', {required: true})}
+             className="input  min-w-full">
               <option value="low">Low</option>
               <option value="moderate">Moderate</option>
               <option value="high">High</option>
@@ -73,9 +68,8 @@ const CreateTask = () => {
               <label className="form-label">Deadline</label>
               <div className="form-control">
                 <input
-                  name="deadline"
+                  {...register("deadline", {required: true})}
                   placeholder="Type here in BDT"
-                  required
                   type="date"
                   min={currentDate}
                   className="input max-w-full"
